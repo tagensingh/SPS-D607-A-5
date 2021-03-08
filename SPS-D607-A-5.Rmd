@@ -1,0 +1,61 @@
+---
+title: "SPS-DATA607-A5"
+author: "Tage N Singh"
+date: "3/7/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+library(tidyverse)
+library(dbplyr)
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r readindata}
+rawdata1 <- read.csv("ASGMNT5RAW.csv", header = TRUE, stringsAsFactors = FALSE) # Read the .csv file
+rawdata1
+```
+```{r datacleaning}
+
+rawdata2 <- rawdata1[-3, ] # Removing empty row
+rawdata2
+
+# Adding missing column names
+
+rawdata2[2, 1] <- 'ALASKA'
+rawdata2[3, 1] <- 'AM_WEST'
+rawdata2[4, 1] <- 'AM_WEST'
+
+rawdata2
+
+# Assigning names to the Columns
+
+names(rawdata2)[1:7] <- c('airline', 'flightStatus','Los_Angeles','Phoenix','San_Diego','San_Francisco','Seattle')
+
+rawdata2
+
+```
+```{r arrangedata}
+
+# Using the "gather" function in tidyr to rearrange the dataset, sourced from https://rstudio.com/resources/webinars/data-wrangling-with-r-and-rstudio/ 
+
+rawdata3 <- gather(rawdata2, c('Los_Angeles':'Seattle'), key = 'destination', value = 'tally')
+rawdata3
+
+
+# removing the "flightstatus" column and adding 2 additional columns "On-Time" and "Delayed" Using the "spread"SPREAD" function - sourced from https://rstudio.com/resources/webinars/data-wrangling-with-r-and-rstudio/ 
+
+rawdata4 <- spread(rawdata3, 'flightStatus', 'tally')
+rawdata4
+
+names(rawdata4)[1:4] <- c('airline','destination','delayed','ontime')
+rawdata4
+
+finaldata <- data.frame(rawdata4)
+
+class(rawdata4)
+
+```
+
