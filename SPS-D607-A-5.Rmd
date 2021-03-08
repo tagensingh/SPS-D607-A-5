@@ -37,9 +37,9 @@ names(rawdata2)[1:7] <- c('airline', 'flightStatus','Los_Angeles','Phoenix','San
 rawdata2
 
 ```
-```{r arrangedata}
+```{r arrangedata, message=TRUE, warning=TRUE}
 
-# Using the "gather" function in tidyr to rearrange the dataset, sourced from https://rstudio.com/resources/webinars/data-wrangling-with-r-and-rstudio/ 
+# code source -  Using the "gather" function in tidyr to rearrange the dataset, sourced from https://rstudio.com/resources/webinars/data-wrangling-with-r-and-rstudio/ 
 
 rawdata3 <- gather(rawdata2, c('Los_Angeles':'Seattle'), key = 'destination', value = 'tally')
 rawdata3
@@ -53,9 +53,29 @@ rawdata4
 names(rawdata4)[1:4] <- c('airline','destination','delayed','ontime')
 rawdata4
 
-finaldata <- data.frame(rawdata4)
-
 class(rawdata4)
 
-```
+str(rawdata4)
 
+
+```
+### Applying some analysis to Data Frame
+
+```{r analysis}
+
+#code source - https://lokhc.wordpress.com/r-for-data-science-solutions/chapter-5-data-transformation/
+
+
+rawdata41 <- rawdata4 %>% group_by(airline)%>%summarise_at(c("delayed", "ontime"), sum)
+rawdata41
+
+
+delayRateAlaska <- rawdata41[1, 'delayed'] / (rawdata41[1, 'delayed'] + rawdata41[1, 'ontime'])
+paste('The dalay rate for ALASKA is: ', round(delayRateAlaska$delayed * 100, 2), '%', sep = '')
+
+
+delayRateAmWest <- rawdata41[2, 'delayed'] / (rawdata41[2, 'delayed'] + rawdata41[2, 'ontime'])
+paste('The dalay rate for AM WEST is: ', round(delayRateAmWest$delayed * 100, 2), '%', sep = '')
+
+```
+### From the data above, it is apparant that Alaska Airlines has a HIGHER delayed rate than Am West.

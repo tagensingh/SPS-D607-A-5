@@ -381,19 +381,19 @@ summary {
 
 <pre class="r"><code>rawdata1 &lt;- read.csv(&quot;ASGMNT5RAW.csv&quot;, header = TRUE, stringsAsFactors = FALSE) # Read the .csv file
 rawdata1</code></pre>
-<pre><code>##         X     X.1 LAX     PHX SAN SFO     SEA
-## 1  ALASKA On-Time 497    221  212 503  1,841 
-## 2         Delayed  62     12   20 102    305 
-## 3                  NA          NA  NA        
-## 4 AM WEST On-Time 694  4,840  383 320    201 
-## 5         Delayed 117    415   65 129     61</code></pre>
+<pre><code>##         X     X.1 LAX  PHX SAN SFO  SEA
+## 1  ALASKA On-Time 497  221 212 503 1841
+## 2         Delayed  62   12  20 102  305
+## 3                  NA   NA  NA  NA   NA
+## 4 AM WEST On-Time 694 4840 383 320  201
+## 5         Delayed 117  415  65 129   61</code></pre>
 <pre class="r"><code>rawdata2 &lt;- rawdata1[-3, ] # Removing empty row
 rawdata2</code></pre>
-<pre><code>##         X     X.1 LAX     PHX SAN SFO     SEA
-## 1  ALASKA On-Time 497    221  212 503  1,841 
-## 2         Delayed  62     12   20 102    305 
-## 4 AM WEST On-Time 694  4,840  383 320    201 
-## 5         Delayed 117    415   65 129     61</code></pre>
+<pre><code>##         X     X.1 LAX  PHX SAN SFO  SEA
+## 1  ALASKA On-Time 497  221 212 503 1841
+## 2         Delayed  62   12  20 102  305
+## 4 AM WEST On-Time 694 4840 383 320  201
+## 5         Delayed 117  415  65 129   61</code></pre>
 <pre class="r"><code># Adding missing column names
 
 rawdata2[2, 1] &lt;- &#39;ALASKA&#39;
@@ -401,78 +401,98 @@ rawdata2[3, 1] &lt;- &#39;AM_WEST&#39;
 rawdata2[4, 1] &lt;- &#39;AM_WEST&#39;
 
 rawdata2</code></pre>
-<pre><code>##         X     X.1 LAX     PHX SAN SFO     SEA
-## 1  ALASKA On-Time 497    221  212 503  1,841 
-## 2  ALASKA Delayed  62     12   20 102    305 
-## 4 AM_WEST On-Time 694  4,840  383 320    201 
-## 5 AM_WEST Delayed 117    415   65 129     61</code></pre>
+<pre><code>##         X     X.1 LAX  PHX SAN SFO  SEA
+## 1  ALASKA On-Time 497  221 212 503 1841
+## 2  ALASKA Delayed  62   12  20 102  305
+## 4 AM_WEST On-Time 694 4840 383 320  201
+## 5 AM_WEST Delayed 117  415  65 129   61</code></pre>
 <pre class="r"><code># Assigning names to the Columns
 
 names(rawdata2)[1:7] &lt;- c(&#39;airline&#39;, &#39;flightStatus&#39;,&#39;Los_Angeles&#39;,&#39;Phoenix&#39;,&#39;San_Diego&#39;,&#39;San_Francisco&#39;,&#39;Seattle&#39;)
 
 rawdata2</code></pre>
 <pre><code>##   airline flightStatus Los_Angeles Phoenix San_Diego San_Francisco Seattle
-## 1  ALASKA      On-Time         497    221        212           503  1,841 
-## 2  ALASKA      Delayed          62     12         20           102    305 
-## 4 AM_WEST      On-Time         694  4,840        383           320    201 
-## 5 AM_WEST      Delayed         117    415         65           129     61</code></pre>
+## 1  ALASKA      On-Time         497     221       212           503    1841
+## 2  ALASKA      Delayed          62      12        20           102     305
+## 4 AM_WEST      On-Time         694    4840       383           320     201
+## 5 AM_WEST      Delayed         117     415        65           129      61</code></pre>
 <pre class="r"><code># Using the &quot;gather&quot; function in tidyr to rearrange the dataset, sourced from https://rstudio.com/resources/webinars/data-wrangling-with-r-and-rstudio/ 
 
 rawdata3 &lt;- gather(rawdata2, c(&#39;Los_Angeles&#39;:&#39;Seattle&#39;), key = &#39;destination&#39;, value = &#39;tally&#39;)
 rawdata3</code></pre>
-<pre><code>##    airline flightStatus   destination   tally
-## 1   ALASKA      On-Time   Los_Angeles     497
-## 2   ALASKA      Delayed   Los_Angeles      62
-## 3  AM_WEST      On-Time   Los_Angeles     694
-## 4  AM_WEST      Delayed   Los_Angeles     117
-## 5   ALASKA      On-Time       Phoenix    221 
-## 6   ALASKA      Delayed       Phoenix     12 
-## 7  AM_WEST      On-Time       Phoenix  4,840 
-## 8  AM_WEST      Delayed       Phoenix    415 
-## 9   ALASKA      On-Time     San_Diego     212
-## 10  ALASKA      Delayed     San_Diego      20
-## 11 AM_WEST      On-Time     San_Diego     383
-## 12 AM_WEST      Delayed     San_Diego      65
-## 13  ALASKA      On-Time San_Francisco     503
-## 14  ALASKA      Delayed San_Francisco     102
-## 15 AM_WEST      On-Time San_Francisco     320
-## 16 AM_WEST      Delayed San_Francisco     129
-## 17  ALASKA      On-Time       Seattle  1,841 
-## 18  ALASKA      Delayed       Seattle    305 
-## 19 AM_WEST      On-Time       Seattle    201 
-## 20 AM_WEST      Delayed       Seattle     61</code></pre>
+<pre><code>##    airline flightStatus   destination tally
+## 1   ALASKA      On-Time   Los_Angeles   497
+## 2   ALASKA      Delayed   Los_Angeles    62
+## 3  AM_WEST      On-Time   Los_Angeles   694
+## 4  AM_WEST      Delayed   Los_Angeles   117
+## 5   ALASKA      On-Time       Phoenix   221
+## 6   ALASKA      Delayed       Phoenix    12
+## 7  AM_WEST      On-Time       Phoenix  4840
+## 8  AM_WEST      Delayed       Phoenix   415
+## 9   ALASKA      On-Time     San_Diego   212
+## 10  ALASKA      Delayed     San_Diego    20
+## 11 AM_WEST      On-Time     San_Diego   383
+## 12 AM_WEST      Delayed     San_Diego    65
+## 13  ALASKA      On-Time San_Francisco   503
+## 14  ALASKA      Delayed San_Francisco   102
+## 15 AM_WEST      On-Time San_Francisco   320
+## 16 AM_WEST      Delayed San_Francisco   129
+## 17  ALASKA      On-Time       Seattle  1841
+## 18  ALASKA      Delayed       Seattle   305
+## 19 AM_WEST      On-Time       Seattle   201
+## 20 AM_WEST      Delayed       Seattle    61</code></pre>
 <pre class="r"><code># removing the &quot;flightstatus&quot; column and adding 2 additional columns &quot;On-Time&quot; and &quot;Delayed&quot; Using the &quot;spread&quot;SPREAD&quot; function - sourced from https://rstudio.com/resources/webinars/data-wrangling-with-r-and-rstudio/ 
 
 rawdata4 &lt;- spread(rawdata3, &#39;flightStatus&#39;, &#39;tally&#39;)
 rawdata4</code></pre>
 <pre><code>##    airline   destination Delayed On-Time
 ## 1   ALASKA   Los_Angeles      62     497
-## 2   ALASKA       Phoenix     12     221 
+## 2   ALASKA       Phoenix      12     221
 ## 3   ALASKA     San_Diego      20     212
 ## 4   ALASKA San_Francisco     102     503
-## 5   ALASKA       Seattle    305   1,841 
+## 5   ALASKA       Seattle     305    1841
 ## 6  AM_WEST   Los_Angeles     117     694
-## 7  AM_WEST       Phoenix    415   4,840 
+## 7  AM_WEST       Phoenix     415    4840
 ## 8  AM_WEST     San_Diego      65     383
 ## 9  AM_WEST San_Francisco     129     320
-## 10 AM_WEST       Seattle     61     201</code></pre>
+## 10 AM_WEST       Seattle      61     201</code></pre>
 <pre class="r"><code>names(rawdata4)[1:4] &lt;- c(&#39;airline&#39;,&#39;destination&#39;,&#39;delayed&#39;,&#39;ontime&#39;)
 rawdata4</code></pre>
-<pre><code>##    airline   destination delayed  ontime
-## 1   ALASKA   Los_Angeles      62     497
-## 2   ALASKA       Phoenix     12     221 
-## 3   ALASKA     San_Diego      20     212
-## 4   ALASKA San_Francisco     102     503
-## 5   ALASKA       Seattle    305   1,841 
-## 6  AM_WEST   Los_Angeles     117     694
-## 7  AM_WEST       Phoenix    415   4,840 
-## 8  AM_WEST     San_Diego      65     383
-## 9  AM_WEST San_Francisco     129     320
-## 10 AM_WEST       Seattle     61     201</code></pre>
-<pre class="r"><code>finaldata &lt;- data.frame(rawdata4)
-
-class(rawdata4)</code></pre>
+<pre><code>##    airline   destination delayed ontime
+## 1   ALASKA   Los_Angeles      62    497
+## 2   ALASKA       Phoenix      12    221
+## 3   ALASKA     San_Diego      20    212
+## 4   ALASKA San_Francisco     102    503
+## 5   ALASKA       Seattle     305   1841
+## 6  AM_WEST   Los_Angeles     117    694
+## 7  AM_WEST       Phoenix     415   4840
+## 8  AM_WEST     San_Diego      65    383
+## 9  AM_WEST San_Francisco     129    320
+## 10 AM_WEST       Seattle      61    201</code></pre>
+<pre class="r"><code>class(rawdata4)</code></pre>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>str(rawdata4)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    10 obs. of  4 variables:
+##  $ airline    : chr  &quot;ALASKA&quot; &quot;ALASKA&quot; &quot;ALASKA&quot; &quot;ALASKA&quot; ...
+##  $ destination: chr  &quot;Los_Angeles&quot; &quot;Phoenix&quot; &quot;San_Diego&quot; &quot;San_Francisco&quot; ...
+##  $ delayed    : num  62 12 20 102 305 117 415 65 129 61
+##  $ ontime     : num  497 221 212 503 1841 ...</code></pre>
+<div id="applying-some-analysis-to-data-frame" class="section level3">
+<h3>Applying some analysis to Data Frame</h3>
+<pre class="r"><code>rawdata41 &lt;- rawdata4 %&gt;% group_by(airline)%&gt;%summarise_at(c(&quot;delayed&quot;, &quot;ontime&quot;), sum)
+rawdata41</code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   airline delayed ontime
+## * &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;
+## 1 ALASKA      501   3274
+## 2 AM_WEST     787   6438</code></pre>
+<pre class="r"><code>delayRateAlaska &lt;- rawdata41[1, &#39;delayed&#39;] / (rawdata41[1, &#39;delayed&#39;] + rawdata41[1, &#39;ontime&#39;])
+paste(&#39;The dalay rate for ALASKA is: &#39;, round(delayRateAlaska$delayed * 100, 2), &#39;%&#39;, sep = &#39;&#39;)</code></pre>
+<pre><code>## [1] &quot;The dalay rate for ALASKA is: 13.27%&quot;</code></pre>
+<pre class="r"><code>delayRateAmWest &lt;- rawdata41[2, &#39;delayed&#39;] / (rawdata41[2, &#39;delayed&#39;] + rawdata41[2, &#39;ontime&#39;])
+paste(&#39;The dalay rate for AM WEST is: &#39;, round(delayRateAmWest$delayed * 100, 2), &#39;%&#39;, sep = &#39;&#39;)</code></pre>
+<pre><code>## [1] &quot;The dalay rate for AM WEST is: 10.89%&quot;</code></pre>
+</div>
 
 
 
